@@ -47,11 +47,9 @@ def abrir_janela_sistema():
     image_label.pack(pady=(90, 0)) # onde 0 é o espaço ACIMA da imagem e 10 é o espaço ABAIXO da imagem
     
     #-------------------\\-------------------
-    # Título central à janela
-    # label = tk.Label(janela_sistema, text="EDITAR CONFORME A PÁGINA", font=("Arial", 12), fg="white", bg="#001f3f")
-    # label.pack(pady=(20, 0)) # onde 0 é o espaço ACIMA da imagem e 10 é o espaço ABAIXO da imagem   
+    # Adicionando os campos de cadastro de usuário
+    adicionar_campos_cadastro(janela_sistema)
     
-  
     #-------------------\\-------------------
     # Adicionando botões LOGOUT e CONFIGURAÇÕES à janela
     adicionar_botoes(janela_sistema)
@@ -62,12 +60,10 @@ def logout(janela):
     if messagebox.askokcancel("Logout", "Tem certeza que deseja sair?"):
         janela.destroy()  # Fecha o sistema quando o usuário confirma o logout
 
-
 #-------------------\\-------------------
 # Função para ir até a página de configurações ao apertar o botão
 def abrir_pagina_configuracoes():
     print("Abrir página de configurações")  # Vamos modificar depois quando criar a página de configurações, por enquanto, só irá imprimir uma mensagem
-
 
 #-------------------\\-------------------
 def adicionar_botoes(janela):
@@ -83,19 +79,46 @@ def adicionar_botoes(janela):
     settings_button.image = settings_icon  # Definindo a imagem do botão
     settings_button.place(relx=1.0, rely=0.0, x=-75, y=15, anchor='ne')  # Posicionando o botão ao lado do botão de logout
     
-    # Função para adicionar o botão de configurações à janela
-    settings_icon = tk.PhotoImage(file="Python/BibliotecaLEMA/icones/iconehome.png").subsample(1)  # Imagem do botão de início
-    settings_button = tk.Button(janela, image=settings_icon, command=abrir_pagina_configuracoes, bd=0, bg="#001f3f", activebackground="#001f3f", cursor="hand2")  # Criando o botão de início
-    settings_button.image = settings_icon  # Definindo a imagem do botão
-    settings_button.place(relx=1.0, rely=0.0, x=-143, y=15, anchor='ne')  # Posicionando o botão ao lado do botão de logout
+    # Função para adicionar o botão de início à janela
+    home_icon = tk.PhotoImage(file="Python/BibliotecaLEMA/icones/iconehome.png").subsample(1)  # Imagem do botão de início
+    home_button = tk.Button(janela, image=home_icon, command=abrir_pagina_configuracoes, bd=0, bg="#001f3f", activebackground="#001f3f", cursor="hand2")  # Criando o botão de início
+    home_button.image = home_icon  # Definindo a imagem do botão
+    home_button.place(relx=1.0, rely=0.0, x=-143, y=15, anchor='ne')  # Posicionando o botão ao lado do botão de logout
 
-    # subsample()= reduz a imagem, quanto maior o número, menor a imagem em relação ao tamanho original   
-    # relx= Posiciona o botão na extrema direita
-    # rely= Posiciona o botão no topo
-    # x= Ajusta a posição para esquerda
-    # y= Ajusta a posição para baixo
-    # anchor= 'ne' usa o canto superior direito do botão como ponto de ancoragem
+#-------------------\\-------------------
+# Função para adicionar campos de cadastro de usuário à janela
+def adicionar_campos_cadastro(janela):
+    frame_cadastro = tk.Frame(janela, bg="#001f3f")
+    frame_cadastro.pack(pady=(90, 0))
     
+    # Título do box
+    title_label = tk.Label(frame_cadastro, text="Cadastro de Livros", font=("Arial", 14, "bold"), fg="white", bg="#001f3f")
+    title_label.pack(pady=(10, 20))
+
+    # Subframe para os campos de cadastro
+    subframe_cadastro = tk.Frame(frame_cadastro, bg="#001f3f")
+    subframe_cadastro.pack(padx=20, pady=10)
+
+    # Labels e entries
+    labels_texts = ["Título:", "ISBN:", "Autor:", "Editora:", "Ano:", "Gênero:"]
+    labels_entries = []
+
+    for i, text in enumerate(labels_texts):
+        label = tk.Label(subframe_cadastro, text=text, font=("Arial", 11), fg="white", bg="#001f3f", anchor='w') #Configura os títulos dos campos
+        entry = tk.Entry(subframe_cadastro, font=("Arial", 11), width=40) #Configura o box de preenchimento
+        labels_entries.append((label, entry))
+        label.grid(row=(i//2)*2, column=i%2, sticky='w', padx=(10, 10), pady=(5, 0))
+        entry.grid(row=(i//2)*2+1, column=i%2, pady=(0, 5), padx=(10, 10))
+    
+    # Adicionando botão de submissão
+    submit_button = tk.Button(frame_cadastro, text="Cadastrar", font=("Arial", 10), bg="white", fg="#001f3f", command=submit_cadastro)
+    submit_button.pack(pady=(20, 10))
+
+#-------------------\\-------------------
+# Função de submissão de cadastro (exemplo simples)
+def submit_cadastro():
+    messagebox.showinfo("Cadastro", "Usuário cadastrado com sucesso!")
+
 #-------------------\\-------------------
 if __name__ == "__main__":
     abrir_janela_sistema()  # Chamando a função para abrir a janela do sistema quando o código é executado
